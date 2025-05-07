@@ -2,14 +2,16 @@
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 const scene = new BABYLON.Scene(engine);
-const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size: 1000.0}, scene);
-const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMaterial", scene);
-skyboxMaterial.backFaceCulling = false;
-skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0); // No diffuse color
-skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0); // No specular color
-skyboxMaterial.reflectionTexture = new BABYLON.Texture("img/sky.png", scene);
-skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SPHERICAL_MODE;
-skybox.material = skyboxMaterial;
+
+// Add a Spherical Sky
+const skySphere = BABYLON.MeshBuilder.CreateSphere("skySphere", { diameter: 1000.0 }, scene);
+const skySphereMaterial = new BABYLON.StandardMaterial("skySphereMaterial", scene);
+skySphereMaterial.backFaceCulling = false; // Render the inside of the sphere
+skySphereMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0); // No diffuse color
+skySphereMaterial.specularColor = new BABYLON.Color3(0, 0, 0); // No specular color
+skySphereMaterial.emissiveTexture = new BABYLON.Texture("img/sky.png", scene); // Use sky.png as the texture
+skySphere.material = skySphereMaterial;
+
 
 // Create a Camera
 const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 5, -10), scene);
