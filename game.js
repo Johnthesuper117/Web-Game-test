@@ -16,41 +16,46 @@ skySphere.material = skySphereMaterial;
 // Create a Camera
 const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 5, -10), scene);
 camera.attachControl(canvas, true);
-camera.speed = 0.2; // Movement speed
+camera.speed = 0.1; // Movement speed
+
 
 // Add a Light
 const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 light.intensity = 0.7;
 
-// Create Terrain
+// Create Ground
 const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 100, height: 100 }, scene);
 const material = new BABYLON.StandardMaterial("groundMaterial", scene);
-material.diffuseColor = new BABYLON.Color3(0.4, 0.8, 0.4);
+material.diffuseColor = new BABYLON.Color3(0.4, 0.8, 0.4); // Set ground color
 ground.material = material;
 ground.checkCollisions = true; // Enable collision for the ground
 
 // Create Slopes
 function createSlope(x, z, rotation) {
     const slope = BABYLON.MeshBuilder.CreateBox("slope", { 
-        width: 20, // Increased width (factor of 2)
-        height: 2, // Increased thickness (factor of 2)
-        depth: 40  // Increased depth (factor of 2)
+        width: 20, 
+        height: 2, 
+        depth: 40 
     }, scene);
     slope.position.set(x, 1, z);
     slope.rotationQuaternion = BABYLON.Quaternion.FromEulerAngles(0, rotation, Math.PI / 4);
     const slopeMaterial = new BABYLON.StandardMaterial("slopeMaterial", scene);
-    slopeMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.4, 0.4); // Give the slopes a distinct color
+    slopeMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.4, 0.4); // Set slope color
     slope.material = slopeMaterial;
     slope.checkCollisions = true; // Enable collision for the slope
     return slope;
 }
 
+// Add Slopes
 createSlope(0, 10, 0);         // Slope 1
 createSlope(-20, -20, Math.PI / 2); // Slope 2
 createSlope(20, -20, -Math.PI / 2); // Slope 3
 
+createSlope(-20, -20, Math.PI / 2); // Slope 1
+createSlope(20, -20, -Math.PI / 2); // Slope 2
+
 // Physics and Gravity Setup
-scene.gravity = new BABYLON.Vector3(0, -0.1, 0); // Gravity effect
+scene.gravity = new BABYLON.Vector3(0, -0.01, 0); // Gravity effect
 camera.applyGravity = true;
 
 // Enable Collisions
@@ -118,11 +123,11 @@ scene.onBeforeRenderObservable.add(() => {
     forward.normalize();
     right.normalize();
 
-    // Forward/Backward Movement
-    if (movement.forward) camera.position.addInPlace(forward.scale(camera.speed));
-    if (movement.backward) camera.position.addInPlace(forward.scale(-camera.speed));
-
-    // Left/Right Movement
+    // Forward/Backward Left/Right Movement
+    if (movement.forward) camera.moveWithCollisions(forward.scale(camera.speed));
+    if (movement.backward) camera.moveWithCollisions(forward.scale(-camera.speed));
+    if (movement.left) camera.moveWithCollisions(right.scale(-camera.speed));
+    if (movement.right) camera.moveWithCollisions(right.scale(camera.speed));
     if (movement.left) camera.position.addInPlace(right.scale(-camera.speed));
     if (movement.right) camera.position.addInPlace(right.scale(camera.speed));
 
