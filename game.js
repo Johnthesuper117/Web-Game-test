@@ -47,6 +47,73 @@ window.addEventListener("keydown", (event) => {
     }
 });
 
+// Movement Variables
+const movement = { forward: false, backward: false, left: false, right: false, jump: false };
+let isJumping = false;
+
+// Movement Event Listeners
+window.addEventListener("keydown", (event) => {
+    switch (event.key) {
+        case "w":
+            movement.forward = true;
+            break;
+        case "s":
+            movement.backward = true;
+            break;
+        case "a":
+            movement.left = true;
+            break;
+        case "d":
+            movement.right = true;
+            break;
+        case " ":
+            if (!isJumping) {
+                movement.jump = true;
+                isJumping = true; // Prevent double jumps
+            }
+            break;
+    }
+});
+
+window.addEventListener("keyup", (event) => {
+    switch (event.key) {
+        case "w":
+            movement.forward = false;
+            break;
+        case "s":
+            movement.backward = false;
+            break;
+        case "a":
+            movement.left = false;
+            break;
+        case "d":
+            movement.right = false;
+            break;
+        case " ":
+            movement.jump = false;
+            break;
+    }
+});
+
+// Update Movement
+scene.onBeforeRenderObservable.add(() => {
+    if (movement.forward) camera.position.z += camera.speed;
+    if (movement.backward) camera.position.z -= camera.speed;
+    if (movement.left) camera.position.x -= camera.speed;
+    if (movement.right) camera.position.x += camera.speed;
+
+    // Jump Logic
+    if (movement.jump) {
+        const jumpHeight = 0.2;
+        const gravity = 0.05;
+        camera.position.y += jumpHeight;
+        setTimeout(() => {
+            camera.position.y -= gravity;
+            isJumping = false; // Allow jumping again after landing
+        }, 200); // Simulate jump duration
+    }
+});
+
 // Render Loop
 engine.runRenderLoop(() => {
     scene.render();
