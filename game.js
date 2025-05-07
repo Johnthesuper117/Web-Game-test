@@ -13,7 +13,7 @@ const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0)
 light.intensity = 0.7;
 
 // Create Terrain
-const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
+const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 100, height: 100 }, scene);
 const material = new BABYLON.StandardMaterial("groundMaterial", scene);
 material.diffuseColor = new BABYLON.Color3(0.4, 0.8, 0.4);
 ground.material = material;
