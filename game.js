@@ -16,7 +16,7 @@ skySphere.material = skySphereMaterial;
 // Create a Camera
 const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 5, -10), scene);
 camera.attachControl(canvas, true);
-camera.speed = 0.1; // Movement speed
+camera.speed = 0.2; // Movement speed
 
 
 // Add a Light
@@ -51,7 +51,7 @@ createSlope(-20, -20, Math.PI / 2); // Slope 1
 createSlope(20, -20, -Math.PI / 2); // Slope 2
 
 // Physics and Gravity Setup
-scene.gravity = new BABYLON.Vector3(0, -0.01, 0); // Gravity effect
+scene.gravity = new BABYLON.Vector3(0, -0.1, 0); // Gravity effect
 camera.applyGravity = true;
 
 // Enable Collisions
@@ -119,15 +119,15 @@ scene.onBeforeRenderObservable.add(() => {
     forward.normalize();
     right.normalize();
 
-    // Forward/Backward Left/Right Movement
+    // Forward/Backward Movement
     if (movement.forward) camera.moveWithCollisions(forward.scale(camera.speed));
     if (movement.backward) camera.moveWithCollisions(forward.scale(-camera.speed));
+
+    // Left/Right Movement
     if (movement.left) camera.moveWithCollisions(right.scale(-camera.speed));
     if (movement.right) camera.moveWithCollisions(right.scale(camera.speed));
-    if (movement.left) camera.position.addInPlace(right.scale(-camera.speed));
-    if (movement.right) camera.position.addInPlace(right.scale(camera.speed));
 
-    // Apply Gravity
+    // Apply Gravity (Optional: Adjust based on your needs)
     if (camera.position.y > 1) {
         camera.position.y += scene.gravity.y;
     } else {
