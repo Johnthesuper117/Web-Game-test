@@ -6,7 +6,7 @@ const scene = new BABYLON.Scene(engine);
 // Create a Camera
 const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 5, -10), scene);
 camera.attachControl(canvas, true);
-camera.speed = 0.5; // Movement speed
+camera.speed = 0.2; // Movement speed
 
 // Add a Light
 const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
@@ -23,6 +23,7 @@ function createSlope(x, z, rotation) {
     const slope = BABYLON.MeshBuilder.CreateBox("slope", { width: 10, height: 1, depth: 20 }, scene);
     slope.position.set(x, 1, z);
     slope.rotationQuaternion = BABYLON.Quaternion.FromEulerAngles(0, rotation, Math.PI / 4);
+    slope.checkCollisions = true; // Enable collisions for slopes
     return slope;
 }
 createSlope(0, 10, 0);
@@ -39,7 +40,7 @@ camera.checkCollisions = true;
 ground.checkCollisions = true;
 
 // Movement Variables
-const movement = { forward: false, backward: false, left: false, right: false, jump: false };
+const movement = { forward: false, backward: false, left: false, right: false };
 let isJumping = false;
 
 // Movement Event Listeners
@@ -58,9 +59,9 @@ window.addEventListener("keydown", (event) => {
             movement.right = true;
             break;
         case " ":
-            if (!isJumping) {
-                movement.jump = true;
-                isJumping = true; // Prevent double jumps
+            if (!isJumping && camera.position.y <= 1.1) {
+                isJumping = true; // Start jump
+                camera.position.y += 1; // Add jump height
             }
             break;
     }
@@ -81,7 +82,7 @@ window.addEventListener("keyup", (event) => {
             movement.right = false;
             break;
         case " ":
-            movement.jump = false;
+            isJumping = false; // Reset jumping state when space key is released
             break;
     }
 });
@@ -90,6 +91,14 @@ window.addEventListener("keyup", (event) => {
 scene.onBeforeRenderObservable.add(() => {
     const forward = camera.getDirection(BABYLON.Axis.Z);
     const right = camera.getDirection(BABYLON.Axis.X);
+
+    // Ensure movement is restricted to X and Z axes
+    forward.y = 0; // Remove Y component for forward/backward movement
+    right.y = 0;   // Remove Y component for strafing (left/right)
+
+    // Normalize vectors to avoid diagonal speed boost
+    forward.normalize();
+    right.normalize();
 
     // Forward/Backward Movement
     if (movement.forward) camera.position.addInPlace(forward.scale(camera.speed));
@@ -104,12 +113,7 @@ scene.onBeforeRenderObservable.add(() => {
         camera.position.y += scene.gravity.y;
     } else {
         camera.position.y = 1; // Prevent falling through the ground
-        isJumping = false; // Reset jumping state
-    }
-
-    // Jump Logic
-    if (movement.jump && camera.position.y <= 1.1) {
-        camera.position.y += 5; // Jump height
+        isJumping = false; // Allow jumping again
     }
 });
 
