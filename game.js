@@ -17,18 +17,27 @@ const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 5
 const material = new BABYLON.StandardMaterial("groundMaterial", scene);
 material.diffuseColor = new BABYLON.Color3(0.4, 0.8, 0.4);
 ground.material = material;
+ground.checkCollisions = true; // Enable collision for the ground
 
 // Create Slopes
 function createSlope(x, z, rotation) {
-    const slope = BABYLON.MeshBuilder.CreateBox("slope", { width: 10, height: 1, depth: 20 }, scene);
+    const slope = BABYLON.MeshBuilder.CreateBox("slope", { 
+        width: 20, // Increased width (factor of 2)
+        height: 2, // Increased thickness (factor of 2)
+        depth: 40  // Increased depth (factor of 2)
+    }, scene);
     slope.position.set(x, 1, z);
     slope.rotationQuaternion = BABYLON.Quaternion.FromEulerAngles(0, rotation, Math.PI / 4);
-    slope.checkCollisions = true; // Enable collisions for slopes
+    const slopeMaterial = new BABYLON.StandardMaterial("slopeMaterial", scene);
+    slopeMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.4, 0.4); // Give the slopes a distinct color
+    slope.material = slopeMaterial;
+    slope.checkCollisions = true; // Enable collision for the slope
     return slope;
 }
-createSlope(0, 10, 0);
-createSlope(-10, -10, Math.PI / 2);
-createSlope(10, -10, -Math.PI / 2);
+
+createSlope(0, 10, 0);         // Slope 1
+createSlope(-20, -20, Math.PI / 2); // Slope 2
+createSlope(20, -20, -Math.PI / 2); // Slope 3
 
 // Physics and Gravity Setup
 scene.gravity = new BABYLON.Vector3(0, -0.1, 0); // Gravity effect
@@ -37,7 +46,6 @@ camera.applyGravity = true;
 // Enable Collisions
 scene.collisionsEnabled = true;
 camera.checkCollisions = true;
-ground.checkCollisions = true;
 
 // Movement Variables
 const movement = { forward: false, backward: false, left: false, right: false };
