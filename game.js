@@ -29,23 +29,14 @@ createSlope(0, 10, 0);
 createSlope(-10, -10, Math.PI / 2);
 createSlope(10, -10, -Math.PI / 2);
 
-// Create Weapon System
-let equippedWeapon = null;
-const weapons = {
-    1: { name: "Semi-Automatic", fireRate: 300 },
-    2: { name: "Full-Automatic", fireRate: 100 },
-    3: { name: "Shotgun", fireRate: 700 },
-    4: { name: "Rocket Launcher", fireRate: 1000 },
-};
+// Physics and Gravity Setup
+scene.gravity = new BABYLON.Vector3(0, -0.1, 0); // Gravity effect
+camera.applyGravity = true;
 
-// Handle Weapon Switching
-window.addEventListener("keydown", (event) => {
-    const weaponIndex = parseInt(event.key);
-    if (weapons[weaponIndex]) {
-        equippedWeapon = weapons[weaponIndex];
-        console.log(`Equipped: ${equippedWeapon.name}`);
-    }
-});
+// Enable Collisions
+scene.collisionsEnabled = true;
+camera.checkCollisions = true;
+ground.checkCollisions = true;
 
 // Movement Variables
 const movement = { forward: false, backward: false, left: false, right: false, jump: false };
@@ -97,20 +88,28 @@ window.addEventListener("keyup", (event) => {
 
 // Update Movement
 scene.onBeforeRenderObservable.add(() => {
-    if (movement.forward) camera.position.z += camera.speed;
-    if (movement.backward) camera.position.z -= camera.speed;
-    if (movement.left) camera.position.x -= camera.speed;
-    if (movement.right) camera.position.x += camera.speed;
+    const forward = camera.getDirection(BABYLON.Axis.Z);
+    const right = camera.getDirection(BABYLON.Axis.X);
+
+    // Forward/Backward Movement
+    if (movement.forward) camera.position.addInPlace(forward.scale(camera.speed));
+    if (movement.backward) camera.position.addInPlace(forward.scale(-camera.speed));
+
+    // Left/Right Movement
+    if (movement.left) camera.position.addInPlace(right.scale(-camera.speed));
+    if (movement.right) camera.position.addInPlace(right.scale(camera.speed));
+
+    // Apply Gravity
+    if (camera.position.y > 1) {
+        camera.position.y += scene.gravity.y;
+    } else {
+        camera.position.y = 1; // Prevent falling through the ground
+        isJumping = false; // Reset jumping state
+    }
 
     // Jump Logic
-    if (movement.jump) {
-        const jumpHeight = 0.2;
-        const gravity = 0.05;
-        camera.position.y += jumpHeight;
-        setTimeout(() => {
-            camera.position.y -= gravity;
-            isJumping = false; // Allow jumping again after landing
-        }, 200); // Simulate jump duration
+    if (movement.jump && camera.position.y <= 1.1) {
+        camera.position.y += 1; // Jump height
     }
 });
 
