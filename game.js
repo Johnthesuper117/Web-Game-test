@@ -2,6 +2,14 @@
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 const scene = new BABYLON.Scene(engine);
+const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size: 1000.0}, scene);
+const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMaterial", scene);
+skyboxMaterial.backFaceCulling = false;
+skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0); // No diffuse color
+skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0); // No specular color
+skyboxMaterial.reflectionTexture = new BABYLON.Texture("img/sky.png", scene);
+skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SPHERICAL_MODE;
+skybox.material = skyboxMaterial;
 
 // Create a Camera
 const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 5, -10), scene);
