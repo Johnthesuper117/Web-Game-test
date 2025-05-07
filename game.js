@@ -47,10 +47,6 @@ function createSlope(x, z, rotation) {
 }
 
 // Add Slopes
-createSlope(0, 10, 0);         // Slope 1
-createSlope(-20, -20, Math.PI / 2); // Slope 2
-createSlope(20, -20, -Math.PI / 2); // Slope 3
-
 createSlope(-20, -20, Math.PI / 2); // Slope 1
 createSlope(20, -20, -Math.PI / 2); // Slope 2
 
