@@ -109,7 +109,7 @@ scene.onBeforeRenderObservable.add(() => {
 
     // Jump Logic
     if (movement.jump && camera.position.y <= 1.1) {
-        camera.position.y += 1; // Jump height
+        camera.position.y += 5; // Jump height
     }
 });
 
