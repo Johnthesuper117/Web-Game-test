@@ -9,7 +9,12 @@ const skySphereMaterial = new BABYLON.StandardMaterial("skySphereMaterial", scen
 skySphereMaterial.backFaceCulling = false; // Render the inside of the sphere
 skySphereMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0); // No diffuse color
 skySphereMaterial.specularColor = new BABYLON.Color3(0, 0, 0); // No specular color
-skySphereMaterial.emissiveTexture = new BABYLON.Texture("img/sky.png", scene); // Use sky.png as the texture
+try {
+    skySphereMaterial.emissiveTexture = new BABYLON.Texture("img/sky.png", scene); // Use sky.png as the texture
+} catch (e) {
+    console.warn("Sky texture missing. Using fallback color.");
+    skySphereMaterial.emissiveColor = new BABYLON.Color3(0.5, 0.5, 1); // Fallback color
+}
 skySphere.material = skySphereMaterial;
 
 // Create a Camera
@@ -69,7 +74,7 @@ function createGeometricObject({
     return object;
 }
 
-/* Add Objects
+// Add Objects
 createGeometricObject({
     type: "box",
     size: { width: 20, height: 2, depth: 40 },
@@ -86,7 +91,7 @@ createGeometricObject({
     rotation: { x: 0, y: -Math.PI / 2, z: Math.PI / 4 },
     color: { r: 0.8, g: 0.4, b: 0.4 },
     scene: scene
-}); */
+});
 
 // Physics and Gravity Setup
 scene.gravity = new BABYLON.Vector3(0, -0.1, 0);
@@ -108,7 +113,7 @@ window.addEventListener("keydown", (event) => {
         case "a": movement.left = true; break;
         case "d": movement.right = true; break;
         case " ":
-            if (!isJumping && camera.position.y <= 1.1) {
+            if (!isJumping && Math.abs(camera.position.y - 1) < 0.1) {
                 isJumping = true;
                 camera.position.y += 1;
             }
@@ -148,7 +153,7 @@ scene.onBeforeRenderObservable.add(() => {
     camera.moveWithCollisions(movementVector.scale(camera.speed));
 
     if (camera.position.y > 1) {
-        camera.position.y += scene.gravity.y;
+        camera.moveWithCollisions(new BABYLON.Vector3(0, scene.gravity.y, 0));
     } else {
         camera.position.y = 1;
         isJumping = false;
