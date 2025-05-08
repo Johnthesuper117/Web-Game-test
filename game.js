@@ -126,7 +126,7 @@ window.addEventListener("keyup", (event) => {
     }
 });
 
-// Update Movement
+// Optimized Movement Logic
 scene.onBeforeRenderObservable.add(() => {
     const forward = camera.getDirection(BABYLON.Axis.Z);
     const right = camera.getDirection(BABYLON.Axis.X);
@@ -137,10 +137,15 @@ scene.onBeforeRenderObservable.add(() => {
     forward.normalize();
     right.normalize();
 
-    if (movement.forward) camera.moveWithCollisions(forward.scale(camera.speed));
-    if (movement.backward) camera.moveWithCollisions(forward.scale(-camera.speed));
-    if (movement.left) camera.moveWithCollisions(right.scale(-camera.speed));
-    if (movement.right) camera.moveWithCollisions(right.scale(camera.speed));
+    const movementVector = new BABYLON.Vector3();
+
+    if (movement.forward) movementVector.addInPlace(forward);
+    if (movement.backward) movementVector.subtractInPlace(forward);
+    if (movement.left) movementVector.subtractInPlace(right);
+    if (movement.right) movementVector.addInPlace(right);
+
+    movementVector.normalize(); // Prevent diagonal speed boost
+    camera.moveWithCollisions(movementVector.scale(camera.speed));
 
     if (camera.position.y > 1) {
         camera.position.y += scene.gravity.y;
