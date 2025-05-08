@@ -69,7 +69,7 @@ function createGeometricObject({
     return object;
 }
 
-// Add Objects
+/* Add Objects
 createGeometricObject({
     type: "box",
     size: { width: 20, height: 2, depth: 40 },
@@ -86,7 +86,7 @@ createGeometricObject({
     rotation: { x: 0, y: -Math.PI / 2, z: Math.PI / 4 },
     color: { r: 0.8, g: 0.4, b: 0.4 },
     scene: scene
-});
+}); */
 
 // Physics and Gravity Setup
 scene.gravity = new BABYLON.Vector3(0, -0.1, 0);
