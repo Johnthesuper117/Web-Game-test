@@ -78,7 +78,7 @@ function createGeometricObject({
 createGeometricObject({
     type: "box",
     size: { width: 20, height: 2, depth: 40 },
-    position: { x: -20, y: 1, z: -20 },
+    position: { x: -40, y: 1, z: -40 },
     rotation: { x: 0, y: Math.PI / 2, z: Math.PI / 4 },
     color: { r: 0.8, g: 0.4, b: 0.4 },
     scene: scene
@@ -87,7 +87,7 @@ createGeometricObject({
 createGeometricObject({
     type: "box",
     size: { width: 20, height: 2, depth: 40 },
-    position: { x: 20, y: 1, z: -20 },
+    position: { x: 40, y: 1, z: -40 },
     rotation: { x: 0, y: -Math.PI / 2, z: Math.PI / 4 },
     color: { r: 0.8, g: 0.4, b: 0.4 },
     scene: scene
