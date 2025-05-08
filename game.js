@@ -30,24 +30,79 @@ material.diffuseColor = new BABYLON.Color3(0.4, 0.8, 0.4); // Set ground color
 ground.material = material;
 ground.checkCollisions = true; // Enable collision for the ground
 
-// Create Slopes
-function createSlope(x, z, rotation) {
-    const slope = BABYLON.MeshBuilder.CreateBox("slope", { 
-        width: 20, 
-        height: 2, 
-        depth: 40 
-    }, scene);
-    slope.position.set(x, 1, z);
-    slope.rotationQuaternion = BABYLON.Quaternion.FromEulerAngles(0, rotation, Math.PI / 4);
-    const slopeMaterial = new BABYLON.StandardMaterial("slopeMaterial", scene);
-    slopeMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.4, 0.4); // Set slope color
-    slope.material = slopeMaterial;
-    slope.checkCollisions = true; // Enable collision for the slope
-    return slope;
+// Function to Create a Geometric Object
+function createGeometricObject({ 
+    type = "box", // Type of object: box, sphere, cylinder, etc.
+    size = { width: 1, height: 1, depth: 1 }, // Dimensions
+    position = { x: 0, y: 0, z: 0 }, // Position
+    rotation = { x: 0, y: 0, z: 0 }, // Rotation in radians
+    color = { r: 1, g: 1, b: 1 }, // Color (RGB values from 0 to 1)
+    materialOptions = {}, // Additional material options if needed
+    scene // Reference to the Babylon.js scene
+}) {
+    // Create the geometric object based on the specified type
+    let object;
+    if (type === "box") {
+        object = BABYLON.MeshBuilder.CreateBox("object", { 
+            width: size.width, 
+            height: size.height, 
+            depth: size.depth 
+        }, scene);
+    } else if (type === "sphere") {
+        object = BABYLON.MeshBuilder.CreateSphere("object", { 
+            diameter: size.width 
+        }, scene);
+    } else if (type === "cylinder") {
+        object = BABYLON.MeshBuilder.CreateCylinder("object", { 
+            height: size.height, 
+            diameter: size.width 
+        }, scene);
+    } else {
+        throw new Error("Unsupported object type");
+    }
+
+    // Set position
+    object.position.set(position.x, position.y, position.z);
+
+    // Set rotation
+    object.rotationQuaternion = BABYLON.Quaternion.FromEulerAngles(
+        rotation.x, 
+        rotation.y, 
+        rotation.z
+    );
+
+    // Create and assign material
+    const material = new BABYLON.StandardMaterial("objectMaterial", scene);
+    material.diffuseColor = new BABYLON.Color3(color.r, color.g, color.b);
+
+    // Apply additional material options
+    Object.assign(material, materialOptions);
+    object.material = material;
+
+    // Enable collisions
+    object.checkCollisions = true;
+
+    return object;
 }
 
-// Add Slopes
-// createSlope(-20, -20, Math.PI / 2); // Slope 1
+// Example: Replace Slopes with Geometric Objects
+/*createGeometricObject({
+    type: "box",
+    size: { width: 20, height: 2, depth: 40 },
+    position: { x: -20, y: 1, z: -20 },
+    rotation: { x: 0, y: Math.PI / 2, z: Math.PI / 4 },
+    color: { r: 0.8, g: 0.4, b: 0.4 },
+    scene: scene
+});*/
+
+/*createGeometricObject({
+    type: "box",
+    size: { width: 20, height: 2, depth: 40 },
+    position: { x: 20, y: 1, z: -20 },
+    rotation: { x: 0, y: -Math.PI / 2, z: Math.PI / 4 },
+    color: { r: 0.8, g: 0.4, b: 0.4 },
+    scene: scene
+});*/
 
 // Physics and Gravity Setup
 scene.gravity = new BABYLON.Vector3(0, -0.1, 0); // Gravity effect
