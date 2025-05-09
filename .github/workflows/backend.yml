@@ -1,0 +1,29 @@
+name: Python Backend Simulation
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: "Command to run on the backend"
+        required: true
+        default: "print('Hello from GitHub Actions!')"
+
+jobs:
+  run-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: pip install websockets
+
+      - name: Run User Command
+        run: |
+          echo "Running command: ${{ github.event.inputs.command }}"
+          python -c "${{ github.event.inputs.command }}"
