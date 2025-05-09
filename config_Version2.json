@@ -1,0 +1,23 @@
+{
+    "player": {
+        "speed": 5,
+        "jumpHeight": 10,
+        "gravity": 9.8,
+        "sprintMultiplier": 1.5,
+        "crouchSpeed": 2.5,
+        "slideSpeedBoost": 1.2,
+        "wallJumpLimit": 3
+    },
+    "guns": {
+        "gun1": {
+            "bulletSpeed": 10,
+            "bulletDamage": 25,
+            "rateOfFire": 0.5,
+            "bulletsPerShot": 1,
+            "firingMode": "semi-automatic",
+            "bulletType": "single",
+            "bulletSpread": 5,
+            "equipKey": "1"
+        }
+    }
+}
