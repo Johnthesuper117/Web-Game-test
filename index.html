@@ -82,6 +82,17 @@
         sendButton.click();
       }
     });
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      async function fetchBackendResult() {
+        const response = await fetch('https://api.github.com/repos/Johnthesuper117/Web-Game-test/contents/result.txt');
+        const data = await response.json();
+        const content = atob(data.content); // Decode base64 content
+        console.log("Backend Result:", content);
+      }
+
+      fetchBackendResult();
+    });
   </script>
 </body>
 </html>
