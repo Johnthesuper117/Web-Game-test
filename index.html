@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Command System</title>
+  <style>
+    body {
+      font-family: monospace;
+      background-color: black;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #output {
+      padding: 10px;
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    #input {
+      display: flex;
+      padding: 10px;
+      background-color: #333;
+    }
+    #command {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      background-color: black;
+      color: white;
+      border: none;
+      outline: none;
+    }
+    #command::placeholder {
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div id="output"></div>
+  <div id="input">
+    <input type="text" id="command" placeholder="Type a command..." autofocus />
+  </div>
+  <script>
+    // Get references to the input and output elements
+const outputDiv = document.getElementById("output");
+const commandInput = document.getElementById("command");
+
+// Print a message to the terminal output
+function printOutput(message) {
+  outputDiv.innerHTML += message + "\n";
+  outputDiv.scrollTop = outputDiv.scrollHeight; // Auto-scroll to bottom
+}
+
+// Command handler function
+function handleCommand(command) {
+  const args = command.split(" "); // Split command and arguments
+  const mainCommand = args[0].toLowerCase(); // Get the main command
+
+  // Handle basic commands
+  switch (mainCommand) {
+    case "/help":
+      printOutput("Available commands:\n/help - List commands\n/echo [text] - Echo back text\n/time - Display current time");
+      break;
+
+    case "/echo":
+      const text = args.slice(1).join(" "); // Get everything after the command
+      printOutput(text || "Please provide text to echo.");
+      break;
+
+    case "/time":
+      const now = new Date();
+      printOutput(`Current time: ${now.toLocaleString()}`);
+      break;
+
+    case "/math":
+      const expression = args.slice(1).join(" "); // Get the math expression
+      try {
+        const result = eval(expression); // Evaluate the expression
+        printOutput(`Result: ${result}`);
+      } catch (error) {
+        printOutput("Invalid math expression.");
+      }
+      break;
+
+    case "/clear":
+      outputDiv.innerHTML = ""; // Clear the terminal output
+      break;
+    
+    default:
+      printOutput(`Unknown command: ${mainCommand}. Type /help for a list of commands.`);
+  }
+}
+
+// Listen for the user to press Enter
+commandInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    const command = commandInput.value.trim(); // Get the command typed by the user
+    if (command) {
+      printOutput("> " + command); // Show the command in the terminal
+      handleCommand(command); // Process the command
+      commandInput.value = ""; // Clear the input field
+    }
+  }
+});
+
+// Print welcome message
+printOutput("Welcome to your Web Command System!\nType /help to see available commands.");
+  </script>
+</body>
+</html>
