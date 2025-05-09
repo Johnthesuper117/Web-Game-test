@@ -58,6 +58,7 @@
     const commandInput = document.getElementById('command');
     const sendButton = document.getElementById('send-btn');
 
+    //const socket = new WebSocket('ws://<your-backend-url>/ws');
     const socket = new WebSocket('ws://localhost:5000/ws');
 
     socket.onmessage = (event) => {
