@@ -3,111 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Command System</title>
+  <title>Supabase Chat App with Commands</title>
   <style>
     body {
-      font-family: monospace;
-      background-color: black;
-      color: white;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      overflow: hidden;
+      background-color: #2c2f33;
+      color: white;
+    }
+    .hidden {
+      display: none;
+    }
+    #login, #chat-room, #messaging {
+      padding: 20px;
+    }
+    input, button, textarea {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+    }
+    textarea {
+      resize: none;
     }
     #output {
-      padding: 10px;
-      height: calc(100vh - 50px);
+      border: 1px solid #555;
+      height: 300px;
       overflow-y: auto;
-      white-space: pre-wrap;
-    }
-    #input {
-      display: flex;
       padding: 10px;
-      background-color: #333;
-    }
-    #command {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      background-color: black;
-      color: white;
-      border: none;
-      outline: none;
-    }
-    #command::placeholder {
-      color: #777;
+      margin-bottom: 10px;
+      background-color: #23272a;
     }
   </style>
 </head>
 <body>
-  <div id="output"></div>
-  <div id="input">
-    <input type="text" id="command" placeholder="Type a command..." autofocus />
+  <!-- Login Section -->
+  <div id="login">
+    <h1>Login</h1>
+    <input type="text" id="username" placeholder="Enter username" />
+    <button id="login-btn">Login</button>
   </div>
+
+  <!-- Chat Room Section -->
+  <div id="chat-room" class="hidden">
+    <h1>Chat Rooms</h1>
+    <input type="text" id="room-code" placeholder="Enter room code" />
+    <button id="join-room-btn">Join Room</button>
+  </div>
+
+  <!-- Messaging Section -->
+  <div id="messaging" class="hidden">
+    <h1>Chat Room: <span id="current-room"></span></h1>
+    <div id="output"></div>
+    <textarea id="message-input" placeholder="Type your message..."></textarea>
+    <button id="send-btn">Send</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-    // Get references to the input and output elements
-const outputDiv = document.getElementById("output");
-const commandInput = document.getElementById("command");
+    // Initialize Supabase
+    const SUPABASE_URL = "https://wvwlclmaiagbktsowazy.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2d2xjbG1haWFnYmt0c293YXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MDM5MTIsImV4cCI6MjA2MjM3OTkxMn0.nUdAsTggRbSOnsXYEHewD1CrCEyMLk9FBbk5wivAtXs";
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Print a message to the terminal output
-function printOutput(message) {
-  outputDiv.innerHTML += message + "\n";
-  outputDiv.scrollTop = outputDiv.scrollHeight; // Auto-scroll to bottom
-}
+    // Elements
+    const loginSection = document.getElementById('login');
+    const chatRoomSection = document.getElementById('chat-room');
+    const messagingSection = document.getElementById('messaging');
+    const usernameInput = document.getElementById('username');
+    const loginBtn = document.getElementById('login-btn');
+    const roomCodeInput = document.getElementById('room-code');
+    const joinRoomBtn = document.getElementById('join-room-btn');
+    const currentRoomSpan = document.getElementById('current-room');
+    const outputDiv = document.getElementById('output');
+    const messageInput = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
 
-// Command handler function
-function handleCommand(command) {
-  const args = command.split(" "); // Split command and arguments
-  const mainCommand = args[0].toLowerCase(); // Get the main command
+    let currentUser = null;
+    let currentRoom = null;
 
-  // Handle basic commands
-  switch (mainCommand) {
-    case "/help":
-      printOutput("Available commands:\n/help - List commands\n/echo [text] - Echo back text\n/time - Display current time");
-      break;
-
-    case "/echo":
-      const text = args.slice(1).join(" "); // Get everything after the command
-      printOutput(text || "Please provide text to echo.");
-      break;
-
-    case "/time":
-      const now = new Date();
-      printOutput(`Current time: ${now.toLocaleString()}`);
-      break;
-
-    case "/math":
-      const expression = args.slice(1).join(" "); // Get the math expression
-      try {
-        const result = eval(expression); // Evaluate the expression
-        printOutput(`Result: ${result}`);
-      } catch (error) {
-        printOutput("Invalid math expression.");
+    // Login
+    loginBtn.addEventListener('click', () => {
+      const username = usernameInput.value.trim();
+      if (username) {
+        currentUser = username;
+        loginSection.classList.add('hidden');
+        chatRoomSection.classList.remove('hidden');
+      } else {
+        alert("Please enter a username.");
       }
-      break;
+    });
 
-    case "/clear":
-      outputDiv.innerHTML = ""; // Clear the terminal output
-      break;
-    
-    default:
-      printOutput(`Unknown command: ${mainCommand}. Type /help for a list of commands.`);
-  }
-}
+    // Join Room
+    joinRoomBtn.addEventListener('click', () => {
+      currentRoom = roomCodeInput.value.trim();
+      if (currentRoom) {
+        currentRoomSpan.textContent = currentRoom;
+        chatRoomSection.classList.add('hidden');
+        messagingSection.classList.remove('hidden');
 
-// Listen for the user to press Enter
-commandInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    const command = commandInput.value.trim(); // Get the command typed by the user
-    if (command) {
-      printOutput("> " + command); // Show the command in the terminal
-      handleCommand(command); // Process the command
-      commandInput.value = ""; // Clear the input field
+        // Listen for new messages in the room
+        supabase
+          .from(`messages:room_code=eq.${currentRoom}`)
+          .on('INSERT', (payload) => {
+            const message = payload.new;
+            printOutput(`<b>${message.sender}:</b> ${message.message}`);
+          })
+          .subscribe();
+
+        // Load existing messages
+        loadMessages();
+      } else {
+        alert("Please enter a room code.");
+      }
+    });
+
+    // Load Existing Messages
+    async function loadMessages() {
+      const { data: messages, error } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('room_code', currentRoom)
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        console.error("Error loading messages:", error);
+        return;
+      }
+
+      outputDiv.innerHTML = ""; // Clear chat
+      messages.forEach((message) => {
+        printOutput(`<b>${message.sender}:</b> ${message.message}`);
+      });
     }
-  }
-});
 
-// Print welcome message
-printOutput("Welcome to your Web Command System!\nType /help to see available commands.");
+    // Send Message or Handle Commands
+    sendBtn.addEventListener('click', async () => {
+      const message = messageInput.value.trim();
+      if (message) {
+        if (message.startsWith("/")) {
+          handleCommand(message);
+        } else {
+          const { error } = await supabase.from('messages').insert([
+            {
+              room_code: currentRoom,
+              sender: currentUser,
+              message: message
+            }
+          ]);
+
+          if (error) {
+            console.error("Error sending message:", error);
+          } else {
+            messageInput.value = ""; // Clear input
+          }
+        }
+      } else {
+        alert("Please enter a message.");
+      }
+    });
+
+    // Print Output to Chat
+    function printOutput(message) {
+      outputDiv.innerHTML += `<div>${message}</div>`;
+      outputDiv.scrollTop = outputDiv.scrollHeight;
+    }
+
+    // Handle Commands
+    function handleCommand(command) {
+      const args = command.split(" ");
+      const mainCommand = args[0].toLowerCase();
+
+      switch (mainCommand) {
+        case "/help":
+          printOutput("Available commands:\n/help - List commands\n/echo [text] - Echo back text\n/time - Display current time");
+          break;
+
+        case "/echo":
+          const text = args.slice(1).join(" ");
+          printOutput(text || "Please provide text to echo.");
+          break;
+
+        case "/time":
+          const now = new Date();
+          printOutput(`Current time: ${now.toLocaleString()}`);
+          break;
+
+        default:
+          printOutput(`Unknown command: ${mainCommand}. Type /help for a list of commands.`);
+      }
+
+      // Clear input field after executing the command
+      messageInput.value = "";
+    }
   </script>
 </body>
 </html>
