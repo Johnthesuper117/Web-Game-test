@@ -20,7 +20,7 @@ const input = new Input(player);
 const guns = new Guns(player);
 
 // Initialize environment (e.g., skybox and objects)
-environment.createSkybox('./assets/images/sky.png');
+environment.createSkybox('./assets/img/sky.png');
 environment.createObject({
     x: 100,
     y: 100,
