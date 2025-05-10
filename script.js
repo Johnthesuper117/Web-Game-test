@@ -19,15 +19,19 @@ const sendBtn = document.getElementById('send-btn');
 let currentUser = null;
 let currentRoom = null;
 
-// Login
-loginBtn.addEventListener('click', async () => {
-  const username = usernameInput.value.trim();
-  if (!username) {
-    alert("Please enter a username.");
-    return;
-  }
 
-  try {
+document.addEventListener('DOMContentLoaded', () => {
+  const loginBtn = document.getElementById('login-btn');
+  const usernameInput = document.getElementById('username');
+  // Login
+  loginBtn.addEventListener('click', async () => {
+    const username = usernameInput.value.trim();
+    if (!username) {
+      alert("Please enter a username.");
+      return;
+    }
+
+    try {
     // Supabase doesn't support login by username directly, so create an email-like username
     const email = `${username}@example.com`;
     const password = "defaultpassword"; // Use a default password or let users set their own
@@ -53,8 +57,10 @@ loginBtn.addEventListener('click', async () => {
     console.error("Unexpected error during login:", err);
     alert("An unexpected error occurred during login. Please try again.");
   }
+  });
 });
 
+  
 // Join Room
 joinRoomBtn.addEventListener('click', () => {
   currentRoom = roomCodeInput.value.trim();
