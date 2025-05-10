@@ -19,22 +19,18 @@ const sendBtn = document.getElementById('send-btn');
 let currentUser = null;
 let currentRoom = null;
 
+// Login or Sign-Up
+loginBtn.addEventListener('click', async () => {
+  const username = usernameInput.value.trim();
+  if (!username) {
+    alert("Please enter a username.");
+    return;
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const loginBtn = document.getElementById('login-btn');
-  const usernameInput = document.getElementById('username');
-  // Login
-  loginBtn.addEventListener('click', async () => {
-    const username = usernameInput.value.trim();
-    if (!username) {
-      alert("Please enter a username.");
-      return;
-    }
-
-    try {
-    // Supabase doesn't support login by username directly, so create an email-like username
+  try {
+    // Create an email-like username
     const email = `${username}@example.com`;
-    const password = "defaultpassword"; // Use a default password or let users set their own
+    const password = "defaultpassword"; // Default password for all users
 
     // Attempt to sign up or log in the user
     let { user, error } = await supabase.auth.signUp({ email, password });
@@ -57,33 +53,61 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error("Unexpected error during login:", err);
     alert("An unexpected error occurred during login. Please try again.");
   }
-  });
 });
 
-  
-// Join Room
-joinRoomBtn.addEventListener('click', () => {
+// Join or Create Room
+joinRoomBtn.addEventListener('click', async () => {
   currentRoom = roomCodeInput.value.trim();
   if (!currentRoom) {
     alert("Please enter a room code.");
     return;
   }
 
-  currentRoomSpan.textContent = currentRoom;
-  chatRoomSection.classList.add('hidden');
-  messagingSection.classList.remove('hidden');
+  try {
+    // Check if the room exists
+    let { data: room, error } = await supabase
+      .from('rooms')
+      .select('*')
+      .eq('room_code', currentRoom)
+      .single();
 
-  // Listen for new messages in the room
-  supabase
-    .from(`messages:room_code=eq.${currentRoom}`)
-    .on('INSERT', (payload) => {
-      const message = payload.new;
-      printOutput(`<b>${message.sender}:</b> ${message.message}`);
-    })
-    .subscribe();
+    if (error && error.code === "PGRST116") {
+      // Room does not exist, create it
+      const { error: insertError } = await supabase
+        .from('rooms')
+        .insert([{ room_code: currentRoom }]);
+      if (insertError) {
+        console.error("Error creating room:", insertError);
+        alert(`Failed to create room: ${insertError.message}`);
+        return;
+      }
+      alert(`Room ${currentRoom} created successfully!`);
+    } else if (error) {
+      console.error("Error checking room:", error);
+      alert(`Failed to join room: ${error.message}`);
+      return;
+    }
 
-  // Load existing messages
-  loadMessages();
+    // Join the room
+    currentRoomSpan.textContent = currentRoom;
+    chatRoomSection.classList.add('hidden');
+    messagingSection.classList.remove('hidden');
+
+    // Listen for new messages in the room
+    supabase
+      .from(`messages:room_code=eq.${currentRoom}`)
+      .on('INSERT', (payload) => {
+        const message = payload.new;
+        printOutput(`<b>${message.sender}:</b> ${message.message}`);
+      })
+      .subscribe();
+
+    // Load existing messages
+    loadMessages();
+  } catch (err) {
+    console.error("Unexpected error joining room:", err);
+    alert("An unexpected error occurred while joining the room. Please try again.");
+  }
 });
 
 // Load Existing Messages
