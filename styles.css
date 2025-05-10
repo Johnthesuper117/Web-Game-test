@@ -12,6 +12,7 @@ body {
 
 #login, #chat-room, #messaging {
   padding: 20px;
+  display: block;
 }
 
 input, button, textarea {
