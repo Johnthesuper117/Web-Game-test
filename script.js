@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Room does not exist, create it
         const { error: insertError } = await supabase
           .from('rooms')
-          .insert([{ room_code: currentRoom }]);
+          .insert([{ room_code: currentRoom, created_by: currentUser.id }]);
         if (insertError) {
           debug(`Error creating room: ${insertError.message}`);
           alert(`Failed to create room: ${insertError.message}`);
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const { error } = await supabase.from('messages').insert([
         {
           room_code: currentRoom,
-          sender: currentUser.email.split('@')[0], // Use the username part of the email
+          sender: currentUser.id, // Use the user ID to align with the schema
           message: message
         }
       ]);
