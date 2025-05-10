@@ -3,33 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Supabase Chat App with Commands</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Web Game Test</title>
 </head>
 <body>
   <!-- Login Section -->
   <div id="login">
     <h1>Login</h1>
-    <input type="text" id="username" placeholder="Enter username" />
+    <input type="text" id="username" placeholder="Enter your username" />
     <button id="login-btn">Login</button>
   </div>
 
-  <!-- Chat Room Section -->
+  <!-- Debugging Area -->
+  <div id="debug-output" style="margin-top: 20px; color: red;"></div>
+
+  <!-- Chat Room Section (Hidden by Default) -->
   <div id="chat-room" class="hidden">
-    <h1>Chat Rooms</h1>
+    <h1>Chat Room</h1>
     <input type="text" id="room-code" placeholder="Enter room code" />
     <button id="join-room-btn">Join Room</button>
   </div>
 
-  <!-- Messaging Section -->
-  <div id="messaging" class="hidden">
-    <h1>Chat Room: <span id="current-room"></span></h1>
-    <div id="output"></div>
-    <textarea id="message-input" placeholder="Type your message..."></textarea>
-    <button id="send-btn">Send</button>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="script.js"></script>
 </body>
 </html>
