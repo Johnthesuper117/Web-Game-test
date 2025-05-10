@@ -12,6 +12,9 @@ body {
 
 #login, #chat-room, #messaging {
   padding: 20px;
+}
+
+#login {
   display: block;
 }
 
