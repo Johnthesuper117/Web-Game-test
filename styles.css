@@ -12,6 +12,8 @@ body {
 
 #login, #chat-room, #messaging {
   padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 #login {
@@ -22,10 +24,12 @@ input, button, textarea {
   padding: 10px;
   margin: 10px 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 textarea {
   resize: none;
+  height: 100px;
 }
 
 #output {
@@ -42,8 +46,19 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
   background-color: #5a6fb4;
+}
+
+h1 {
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
