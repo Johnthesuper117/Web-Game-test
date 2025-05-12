@@ -153,8 +153,8 @@ setInterval(() => {
 
 // Check if upgrade buttons should be enabled
 function checkUpgradeAvailability() {
-  clickUpgradeBtn.disabled = crystals < clickUpgradeCost;
-  secondUpgradeBtn.disabled = crystals < secondUpgradeCost;
+  clickUpgradeBtn.disabled = rocks < clickUpgradeCost;
+  secondUpgradeBtn.disabled = rocks < secondUpgradeCost;
   convertRocksBtn.disabled = rocks < 10;
 }
 
