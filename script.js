@@ -26,7 +26,7 @@ function updateResourceDisplay() {
 // Generate resource manually
 generateResourceBtn.addEventListener('click', () => {
   const random = Math.random();
-  if (random < 0.7) {
+  if (random < 0.9) {
     rocks += resourcePerClick;
   } else {
     crystals += resourcePerClick;
