@@ -15,6 +15,7 @@ const clickUpgradeCostEl = document.getElementById('click-upgrade-cost');
 const secondUpgradeCostEl = document.getElementById('second-upgrade-cost');
 const clickUpgradeLevelEl = document.getElementById('click-upgrade-level');
 const secondUpgradeLevelEl = document.getElementById('second-upgrade-level');
+const convertRocksBtn = document.getElementById('convert-rocks');
 
 // Update resource display
 function updateResourceDisplay() {
@@ -32,6 +33,16 @@ generateResourceBtn.addEventListener('click', () => {
   }
   updateResourceDisplay();
   checkUpgradeAvailability();
+});
+
+// Convert 10 rocks to 1 crystal
+convertRocksBtn.addEventListener('click', () => {
+  if (rocks >= 10) {
+    rocks -= 10;
+    crystals += 1;
+    updateResourceDisplay();
+    checkUpgradeAvailability();
+  }
 });
 
 // Upgrade "More Per Click"
@@ -76,6 +87,7 @@ setInterval(() => {
 function checkUpgradeAvailability() {
   clickUpgradeBtn.disabled = crystals < clickUpgradeCost;
   secondUpgradeBtn.disabled = crystals < secondUpgradeCost;
+  convertRocksBtn.disabled = rocks < 10;
 }
 
 // Initialize game
