@@ -1,0 +1,9 @@
+{
+  "name": "Desert Arena",
+  "background": "assets/backgrounds/desert.png",
+  "platforms": [
+    { "x": 50, "y": 300, "width": 200, "height": 20 },
+    { "x": 300, "y": 200, "width": 150, "height": 20 }
+  ],
+  "music": "assets/music/desert_theme.mp3"
+}
