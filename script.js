@@ -112,8 +112,8 @@ convertRocksBtn.addEventListener('click', () => {
 
 // Upgrade "More Per Click"
 clickUpgradeBtn.addEventListener('click', () => {
-  if (crystals >= clickUpgradeCost) {
-    crystals -= clickUpgradeCost;
+  if (rocks >= clickUpgradeCost) {
+    rocks -= clickUpgradeCost;
     resourcePerClick += 1;
     clickUpgradeCost = Math.floor(clickUpgradeCost * 1.5);
     clickUpgradeCostEl.textContent = clickUpgradeCost;
@@ -124,8 +124,8 @@ clickUpgradeBtn.addEventListener('click', () => {
 
 // Upgrade "More Per Second"
 secondUpgradeBtn.addEventListener('click', () => {
-  if (crystals >= secondUpgradeCost) {
-    crystals -= secondUpgradeCost;
+  if (rocks >= secondUpgradeCost) {
+    rocks -= secondUpgradeCost;
     resourcePerSecond += 1;
     secondUpgradeCost = Math.floor(secondUpgradeCost * 1.5);
     secondUpgradeCostEl.textContent = secondUpgradeCost;
