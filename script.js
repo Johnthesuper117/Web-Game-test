@@ -117,14 +117,18 @@ function updateCrystalInventoryDisplay() {
 // Event Listeners (add saveGameState calls after updates)
 generateResourceBtn.addEventListener('click', () => {
     const random = Math.random();
-    if (random < 0.9) {
-        rocks += resourcePerClick;
-    } else {
-        const newCrystal = getRandomCrystal();
-        crystals += resourcePerClick;
-        crystalInventory[newCrystal.type][newCrystal.rarity] += 1;
-        console.log(`You found a ${newCrystal.rarity} ${newCrystal.type}!`);
-    }
+    repeat = resourcePerClick;
+    for i in repeat {
+        if (random < 0.9) {
+            rocks += 1;
+        } else {
+            const newCrystal = getRandomCrystal();
+            crystals += 1;
+            crystalInventory[newCrystal.type][newCrystal.rarity] += 1;
+            console.log(`You found a ${newCrystal.rarity} ${newCrystal.type}!`);
+        }
+    };
+    
     updateResourceDisplay();
     checkUpgradeAvailability();
     saveGameState();
