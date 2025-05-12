@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Incremental Game Engine</title>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    <script src="js/script.js"></script>
+  <div id="game-container">
+    <h1>Incremental Game Engine</h1>
+    <div id="resource-display">
+      <p>Resource: <span id="resource-count">0</span></p>
+    </div>
+    <div id="actions">
+      <button id="generate-resource">Generate Resource</button>
+    </div>
+    <div id="upgrades">
+      <h2>Upgrades</h2>
+      <button id="upgrade-button" disabled>Upgrade (Cost: <span id="upgrade-cost">10</span>)</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
