@@ -1,29 +1,39 @@
-let resourceCount = 0;
+let rocks = 0;
+let crystals = 0;
 let resourcePerSecond = 0;
 let upgradeCost = 10;
 
 // DOM Elements
-const resourceCountEl = document.getElementById('resource-count');
+const rocksCountEl = document.getElementById('rocks-count');
+const crystalsCountEl = document.getElementById('crystals-count');
 const generateResourceBtn = document.getElementById('generate-resource');
 const upgradeButton = document.getElementById('upgrade-button');
 const upgradeCostEl = document.getElementById('upgrade-cost');
 
 // Update resource display
 function updateResourceDisplay() {
-  resourceCountEl.textContent = resourceCount;
+  rocksCountEl.textContent = rocks;
+  crystalsCountEl.textContent = crystals;
 }
 
 // Generate resource manually
 generateResourceBtn.addEventListener('click', () => {
-  resourceCount += 1;
+  const random = Math.random();
+  if (random < 0.7) {
+    // 70% chance: Generate a rock
+    rocks += 1;
+  } else {
+    // 30% chance: Generate a crystal
+    crystals += 1;
+  }
   updateResourceDisplay();
   checkUpgradeAvailability();
 });
 
 // Upgrade resource generation
 upgradeButton.addEventListener('click', () => {
-  if (resourceCount >= upgradeCost) {
-    resourceCount -= upgradeCost;
+  if (crystals >= upgradeCost) {
+    crystals -= upgradeCost;
     resourcePerSecond += 1;
     upgradeCost = Math.floor(upgradeCost * 1.5);
     upgradeCostEl.textContent = upgradeCost;
@@ -33,12 +43,21 @@ upgradeButton.addEventListener('click', () => {
 
 // Check if upgrade button should be enabled
 function checkUpgradeAvailability() {
-  upgradeButton.disabled = resourceCount < upgradeCost;
+  upgradeButton.disabled = crystals < upgradeCost;
 }
 
 // Automatic resource generation
 setInterval(() => {
-  resourceCount += resourcePerSecond;
+  for (let i = 0; i < resourcePerSecond; i++) {
+    const random = Math.random();
+    if (random < 0.7) {
+      // 70% chance: Generate a rock
+      rocks += 1;
+    } else {
+      // 30% chance: Generate a crystal
+      crystals += 1;
+    }
+  }
   updateResourceDisplay();
   checkUpgradeAvailability();
 }, 1000);
