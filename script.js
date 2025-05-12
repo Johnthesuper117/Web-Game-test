@@ -1,14 +1,20 @@
 let rocks = 0;
 let crystals = 0;
+let resourcePerClick = 1;
 let resourcePerSecond = 0;
-let upgradeCost = 10;
+let clickUpgradeCost = 10;
+let secondUpgradeCost = 10;
 
 // DOM Elements
 const rocksCountEl = document.getElementById('rocks-count');
 const crystalsCountEl = document.getElementById('crystals-count');
 const generateResourceBtn = document.getElementById('generate-resource');
-const upgradeButton = document.getElementById('upgrade-button');
-const upgradeCostEl = document.getElementById('upgrade-cost');
+const clickUpgradeBtn = document.getElementById('more-per-click');
+const secondUpgradeBtn = document.getElementById('more-per-second');
+const clickUpgradeCostEl = document.getElementById('click-upgrade-cost');
+const secondUpgradeCostEl = document.getElementById('second-upgrade-cost');
+const clickUpgradeLevelEl = document.getElementById('click-upgrade-level');
+const secondUpgradeLevelEl = document.getElementById('second-upgrade-level');
 
 // Update resource display
 function updateResourceDisplay() {
@@ -20,47 +26,57 @@ function updateResourceDisplay() {
 generateResourceBtn.addEventListener('click', () => {
   const random = Math.random();
   if (random < 0.7) {
-    // 70% chance: Generate a rock
-    rocks += 1;
+    rocks += resourcePerClick;
   } else {
-    // 30% chance: Generate a crystal
-    crystals += 1;
+    crystals += resourcePerClick;
   }
   updateResourceDisplay();
   checkUpgradeAvailability();
 });
 
-// Upgrade resource generation
-upgradeButton.addEventListener('click', () => {
-  if (crystals >= upgradeCost) {
-    crystals -= upgradeCost;
-    resourcePerSecond += 1;
-    upgradeCost = Math.floor(upgradeCost * 1.5);
-    upgradeCostEl.textContent = upgradeCost;
+// Upgrade "More Per Click"
+clickUpgradeBtn.addEventListener('click', () => {
+  if (crystals >= clickUpgradeCost) {
+    crystals -= clickUpgradeCost;
+    resourcePerClick += 1;
+    clickUpgradeCost = Math.floor(clickUpgradeCost * 1.5);
+    clickUpgradeCostEl.textContent = clickUpgradeCost;
+    clickUpgradeLevelEl.textContent = resourcePerClick;
     checkUpgradeAvailability();
   }
 });
 
-// Check if upgrade button should be enabled
-function checkUpgradeAvailability() {
-  upgradeButton.disabled = crystals < upgradeCost;
-}
+// Upgrade "More Per Second"
+secondUpgradeBtn.addEventListener('click', () => {
+  if (crystals >= secondUpgradeCost) {
+    crystals -= secondUpgradeCost;
+    resourcePerSecond += 1;
+    secondUpgradeCost = Math.floor(secondUpgradeCost * 1.5);
+    secondUpgradeCostEl.textContent = secondUpgradeCost;
+    secondUpgradeLevelEl.textContent = resourcePerSecond;
+    checkUpgradeAvailability();
+  }
+});
 
 // Automatic resource generation
 setInterval(() => {
   for (let i = 0; i < resourcePerSecond; i++) {
     const random = Math.random();
     if (random < 0.7) {
-      // 70% chance: Generate a rock
       rocks += 1;
     } else {
-      // 30% chance: Generate a crystal
       crystals += 1;
     }
   }
   updateResourceDisplay();
   checkUpgradeAvailability();
 }, 1000);
+
+// Check if upgrade buttons should be enabled
+function checkUpgradeAvailability() {
+  clickUpgradeBtn.disabled = crystals < clickUpgradeCost;
+  secondUpgradeBtn.disabled = crystals < secondUpgradeCost;
+}
 
 // Initialize game
 updateResourceDisplay();
