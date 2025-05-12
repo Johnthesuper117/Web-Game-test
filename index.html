@@ -9,20 +9,26 @@
 <body>
   <div id="game-container">
     <h1>Incremental Game Engine</h1>
-    <div id="resource-display">
-      <p>Resource: <span id="resource-count">0</span></p>
+    <div id="main-content">
+      <div id="resource-display">
+        <p>Rocks: <span id="rocks-count">0</span></p>
+        <p>Crystals: <span id="crystals-count">0</span></p>
+      </div>
+      <div id="actions">
+        <button id="generate-resource">Generate Resource</button>
+      </div>
     </div>
-    <div id="actions">
-      <button id="generate-resource">Generate Resource</button>
-    </div>
-    <div id="upgrades">
-      <h2>Upgrades</h2>
-      <button id="upgrade-button" disabled>Upgrade (Cost: <span id="upgrade-cost">10</span>)</button>
-    </div>
-    <div id="resource-display">
-      <p>Rocks: <span id="rocks-count">0</span></p>
-      <p>Crystals: <span id="crystals-count">0</span></p>
-    </div>
+    <aside id="shop">
+      <h2>Shop</h2>
+      <div>
+        <button id="more-per-click" disabled>More Per Click (Cost: <span id="click-upgrade-cost">10</span>)</button>
+        <p>Current: <span id="click-upgrade-level">1</span></p>
+      </div>
+      <div>
+        <button id="more-per-second" disabled>More Per Second (Cost: <span id="second-upgrade-cost">10</span>)</button>
+        <p>Current: <span id="second-upgrade-level">1</span></p>
+      </div>
+    </aside>
   </div>
   <script src="script.js"></script>
 </body>
