@@ -6,7 +6,7 @@ let clickUpgradeCost = 10;
 let secondUpgradeCost = 10;
 
 // Crystal Types and Rarities
-const crystalTypes = ['Type A', 'Type B', 'Type C', 'Type D'];
+const crystalTypes = ['Fire', 'Water', 'Earth', 'Air'];
 const rarities = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythical'];
 
 const rarityProbabilities = {
