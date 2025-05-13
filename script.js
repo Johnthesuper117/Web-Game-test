@@ -196,5 +196,6 @@ function checkUpgradeAvailability() {
 
 // Initialize game
 loadGameState(); // Load saved data on start
+setInterval()
 updateResourceDisplay();
 checkUpgradeAvailability();
