@@ -114,6 +114,23 @@ function updateCrystalInventoryDisplay() {
     }
 }
 
+function getRandomRarity() {
+  const random = Math.random() * 100;
+  let cumulative = 0;
+
+  for (const [rarity, probability] of Object.entries(rarityProbabilities)) {
+    cumulative += probability;
+    if (random <= cumulative) {
+      return rarity;
+    }
+  }
+  return 'Common';
+
+function getRandomCrystal() {
+  const crystalType = crystalTypes[Math.floor(Math.random() * crystalTypes.length)];
+  const rarity = getRandomRarity();
+  return { type: crystalType, rarity: rarity };
+
 // Event Listeners (add saveGameState calls after updates)
 generateResourceBtn.addEventListener('click', () => {
     const random = Math.random();
