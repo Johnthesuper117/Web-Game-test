@@ -171,6 +171,29 @@ secondUpgradeBtn.addEventListener('click', () => {
     }
 });
 
+setInterval(() => {
+  for (let i = 0; i < resourcePerSecond; i++) {
+    const random = Math.random();
+    if (random < 0.7) {
+      rocks += 1;
+    } else {
+      const newCrystal = getRandomCrystal();
+      crystals += 1;
+      crystalInventory[newCrystal.type][newCrystal.rarity] += 1;
+      console.log(`You found a ${newCrystal.rarity} ${newCrystal.type}!`);
+    }
+  }
+  updateResourceDisplay();
+  checkUpgradeAvailability();
+}, 1000);
+
+// Check if upgrade buttons should be enabled
+function checkUpgradeAvailability() {
+  clickUpgradeBtn.disabled = rocks < clickUpgradeCost;
+  secondUpgradeBtn.disabled = rocks < secondUpgradeCost;
+  convertRocksBtn.disabled = rocks < 10;
+}
+
 // Initialize game
 loadGameState(); // Load saved data on start
 updateResourceDisplay();
