@@ -113,29 +113,28 @@ function updateCrystalInventoryDisplay() {
         }
     }
 }
-
 function getRandomRarity() {
-  const random = Math.random() * 100;
-  let cumulative = 0;
-
-  for (const [rarity, probability] of Object.entries(rarityProbabilities)) {
-    cumulative += probability;
-    if (random <= cumulative) {
-      return rarity;
+    const random = Math.random() * 100;
+    let cumulative = 0;
+    for (const [rarity, probability] of Object.entries(rarityProbabilities)) {
+        cumulative += probability;
+        if (random <= cumulative) {
+            return rarity;
+        }
     }
-  }
-  return 'Common';
+    return 'Common';
+}
 
 function getRandomCrystal() {
-  const crystalType = crystalTypes[Math.floor(Math.random() * crystalTypes.length)];
-  const rarity = getRandomRarity();
-  return { type: crystalType, rarity: rarity };
+    const crystalType = crystalTypes[Math.floor(Math.random() * crystalTypes.length)];
+    const rarity = getRandomRarity();
+    return { type: crystalType, rarity: rarity };
+}
 
 // Event Listeners (add saveGameState calls after updates)
 generateResourceBtn.addEventListener('click', () => {
-    const random = Math.random();
-    repeat = resourcePerClick;
-    for i in repeat {
+    for (let i = 0; i < resourcePerClick; i++) {
+        const random = Math.random();
         if (random < 0.9) {
             rocks += 1;
         } else {
@@ -144,8 +143,7 @@ generateResourceBtn.addEventListener('click', () => {
             crystalInventory[newCrystal.type][newCrystal.rarity] += 1;
             console.log(`You found a ${newCrystal.rarity} ${newCrystal.type}!`);
         }
-    };
-    
+    }
     updateResourceDisplay();
     checkUpgradeAvailability();
     saveGameState();
