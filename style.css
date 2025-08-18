@@ -1,1 +1,95 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #222;
+    color: #f8f8f8;
+}
 
+#top-bar {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0 10px 0;
+    position: relative;
+}
+
+#coins-display {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-120px);
+    font-size: 1.2em;
+}
+
+#swords-display {
+    display: inline-block;
+    font-size: 1.7em;
+    font-weight: bold;
+}
+
+#game-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 80vh;
+    margin-top: 40px;
+}
+
+#center-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 80px;
+}
+
+#smith-btn {
+    font-size: 1.4em;
+    padding: 18px 40px;
+    background: linear-gradient(90deg, #a78236 0%, #e9c46a 100%);
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    color: #222;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    margin-bottom: 16px;
+    transition: background 0.2s;
+}
+
+#smith-btn:active {
+    background: linear-gradient(90deg, #e9c46a 0%, #a78236 100%);
+}
+
+#timer-display {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-top: 10px;
+    min-height: 32px;
+    color: #e76f51;
+    text-shadow: 1px 1px 4px #000;
+}
+
+#right-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 80px;
+}
+
+#sell-btn {
+    font-size: 1.2em;
+    padding: 14px 28px;
+    background: linear-gradient(90deg, #6d6875 0%, #b5838d 100%);
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    color: #f8f8f8;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    transition: background 0.2s;
+}
+
+#sell-btn:active {
+    background: linear-gradient(90deg, #b5838d 0%, #6d6875 100%);
+}
