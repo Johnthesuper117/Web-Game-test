@@ -14,11 +14,9 @@ body {
 }
 
 #coins-display {
-    position: absolute;
     display: inline-block;
     font-weight: bold;
     left: 50%;
-    transform: translateX(-180px);
     font-size: 1.7em;
 }
 
