@@ -15,15 +15,18 @@ body {
 
 #coins-display {
     position: absolute;
+    display: inline-block;
+    font-weight: bold;
     left: 50%;
-    transform: translateX(-120px);
-    font-size: 1.2em;
+    transform: translateX(-180px);
+    font-size: 1.7em;
 }
 
 #swords-display {
     display: inline-block;
     font-size: 1.7em;
     font-weight: bold;
+    right: 50%;
 }
 
 #game-container {
