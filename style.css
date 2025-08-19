@@ -90,3 +90,41 @@ body {
 #sell-btn:active {
     background: linear-gradient(90deg, #b5838d 0%, #6d6875 100%);
 }
+
+/* Upgrade buttons & info */
+#material-upgrade, #forge-upgrade {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+#material-btn, #forge-btn {
+    font-size: 1em;
+    padding: 10px 22px;
+    margin-bottom: 6px;
+    background: linear-gradient(90deg, #457b9d 0%, #a8dadc 100%);
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    color: #222;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.20);
+    transition: background 0.2s;
+}
+
+#material-btn:disabled, #forge-btn:disabled {
+    background: #444;
+    color: #bbb;
+    cursor: not-allowed;
+}
+
+#material-info, #forge-info {
+    font-size: 1.15em;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #f1faee;
+    text-shadow: 1px 1px 2px #000;
+}
