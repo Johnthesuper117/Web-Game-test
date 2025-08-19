@@ -10,20 +10,16 @@ body {
     width: 100%;
     text-align: center;
     padding: 20px 0 10px 0;
-    position: relative;
+    font-size: 1.7em;
+    display: inline-block;
+    font-weight: bold;
 }
 
 #coins-display {
-    display: inline-block;
-    font-weight: bold;
     margin-top: 0%;
-    font-size: 1.7em;
 }
 
 #swords-display {
-    display: inline-block;
-    font-size: 1.7em;
-    font-weight: bold;
     margin-top: 10%;
 }
 
