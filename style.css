@@ -16,7 +16,7 @@ body {
 #coins-display {
     display: inline-block;
     font-weight: bold;
-    left: 50%;
+    top: 50%;
     font-size: 1.7em;
 }
 
@@ -24,7 +24,7 @@ body {
     display: inline-block;
     font-size: 1.7em;
     font-weight: bold;
-    right: 50%;
+    top: 30%;
 }
 
 #game-container {
