@@ -29,4 +29,7 @@
         
         
     </ul>
+    <script>
+        (function() {const signalUnsavedChanges = (event) => {event.preventDefault();event.returnValue = '';};window.addEventListener('beforeunload', signalUnsavedChanges);})();
+    </script>
 </body>
